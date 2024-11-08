@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeTodo, reorderTodo } from "../features/todo/todoSlice";
 import PropTypes from "prop-types";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { MdEditNote } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 
 function Todos({ setTodoText, setIsEditing, setEditTodoId, isEditing }) {
   const todos = useSelector((state) => state.todo.filteredTodos);
@@ -46,28 +48,30 @@ function Todos({ setTodoText, setIsEditing, setEditTodoId, isEditing }) {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="w-[50rem] m-auto mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded"
+                        className="w-[18rem] xs:w-[28rem] sm:w-[38rem] md:w-[45rem] lg:w-[50rem] m-auto mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-zinc-800 px-4 py-2 rounded"
                       >
-                        <div className="text-white">{todo.text}</div>
-                        <div>
+                        <div className="text-white w-full mb-2 sm:mb-0 text-justify">
+                          {todo.text}
+                        </div>
+                        <div className="flex w-full sm:w-auto space-x-3">
                           <button
                             onClick={() => handleEditClick(todo)}
-                            className={`text-white mr-3 border-0 py-1 px-4 focus:outline-none bg-yellow-500 hover:bg-yellow-600 rounded text-md disabled:bg-gray-400 disabled:cursor-not-allowed ${
+                            className={`w-full sm:w-auto text-white mb-2 sm:mb-0 border-0 py-1 px-4 focus:outline-none bg-yellow-500 hover:bg-yellow-600 rounded text-md disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center ${
                               isEditing ? "opacity-50" : ""
                             }`}
                             disabled={isEditing}
                           >
-                            Edit
+                            <MdEditNote size={`1.5rem`} />
                           </button>
 
                           <button
                             onClick={() => dispatch(removeTodo(todo.id))}
-                            className={`text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md disabled:bg-gray-400 disabled:cursor-not-allowed ${
+                            className={`w-full text-white mb-2 sm:mb-0 border-0 py-1 px-4 focus:outline-none bg-red-500 hover:bg-red-600 rounded text-md disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center sm:ml-2 ${
                               isEditing ? "opacity-50" : ""
                             }`}
                             disabled={isEditing}
                           >
-                            Delete
+                            <MdDeleteOutline size={`1.5rem`} />
                           </button>
                         </div>
                       </li>
@@ -88,8 +92,8 @@ Todos.propTypes = {
   setTodoText: PropTypes.func.isRequired,
   setIsEditing: PropTypes.func.isRequired,
   setEditTodoId: PropTypes.func.isRequired,
-  searchTerm: PropTypes.string.isRequired,
-  isEditing: PropTypes.string.isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  searchTerm: PropTypes.string,
 };
 
 export default Todos;
